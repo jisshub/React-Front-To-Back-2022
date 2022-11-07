@@ -129,4 +129,7 @@ function Header({text}) {
 Here we destructure the prop text.
 
 
+# Adding Styles to Component
+
+
 
