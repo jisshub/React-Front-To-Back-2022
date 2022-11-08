@@ -224,4 +224,6 @@ export default function App() {
 
 # Managing Global State
 
+# Card component & conditional styling
+
 
