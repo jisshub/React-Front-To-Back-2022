@@ -229,6 +229,12 @@ export default function App() {
 
 # Events & Prop Drilling
 
+Installing react icons on your app
+
+```bash
+npm i react-icons
+import {FaTimes} from 'react-icons/fa'
+```
 
 ## Delete a Feedback
 
@@ -315,4 +321,49 @@ export default function App() {
     </>
   )
 }
+```
+
+# Feedback Stats Component 
+
+
+**FeedbackStats.jsx**
+
+```jsx
+import React from 'react'
+import PropTypes from 'prop-types'
+
+function FeedbackStats({feedback}) {
+    // calculate rating average
+    let average=feedback.reduce((acc, cur) => {
+        return acc + cur.rating
+    }, 0) / feedback.length
+
+    average = average.toFixed(1).replace(/[.,]0$/, '')
+
+  return (
+    <div className='feedback-stats'>
+        <h4>{feedback.length} Reviews</h4>
+        <h4>Average Rating: {isNaN(average) ? 0: average}</h4>
+    </div>
+  )
+}
+
+FeedbackStats.propTypes={
+    feedback: PropTypes.array.isRequired,
+}
+
+export default FeedbackStats
+```
+
+**App.js**
+
+```jsx
+<>
+  <Header/>
+  <div className='container'> 
+      {/* <h2>Hello World</h2> */}
+  </div>
+  <FeedbackStats feedback={feedback} />
+  <FeedbackList feedback={feedback} handleDelete={deleteFeedback} />
+</>
 ```
