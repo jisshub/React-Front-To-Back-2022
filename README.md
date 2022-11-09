@@ -227,3 +227,92 @@ export default function App() {
 # Card component & conditional styling
 
 
+# Events & Prop Drilling
+
+
+## Delete a Feedback
+
+**FeedbackItem.jsx**
+
+```jsx
+function FeedbackItem({item, handleDelete}) {
+    const [rating, setRating] = useState(7)
+    const [text, setText] = useState('This is an example of feedback item.')
+    const [items, setItems] = useState(item)
+ 
+    return (
+        <Card>
+            <div className='num-display'>{item.rating}</div>
+            <button 
+                className="close"
+                onClick={()=>handleDelete(item.id)}
+                >
+                <FaTimes color='purple' />
+            </button>
+            <div className='text-display'>{item.text}</div>
+        </Card>
+    )
+}
+
+FeedbackItem.propTypes={
+    item: PropTypes.object
+}
+```
+
+**FeedbackList.jsx**
+
+```jsx
+export default function FeedbackList
+({feedback, handleDelete}) {
+
+    if (!feedback && feedback.length === 0) {
+        return (
+            <div>
+                No Feedback Yet
+            </div>
+        )
+    }
+    return (
+        <div className='feedback-list'>
+            {feedback.map((item) => (
+               <FeedbackItem 
+                key={item.id} 
+                item={item}
+                handleDelete={handleDelete}
+               />
+            ))}
+        </div>
+    )
+}
+
+FeedbackList.propTypes = {
+    feedback: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            text: PropTypes.string.isRequired,
+            rating: PropTypes.number.isRequired
+    })
+)}
+```
+
+**App.jsx**
+
+```jsx
+export default function App() {
+  const [feedback, setFeedback] = useState(FeedbackData)
+  const deleteFeedback=(id)=>{
+    if (window.confirm('Are you sure you want to delete ?')) {
+      setFeedback(feedback.filter((eachItem)=> eachItem.id!==id))
+    }
+  } 
+  return (
+    <>
+        <Header/>
+        <div className='container'> 
+            {/* <h2>Hello World</h2> */}
+        </div>
+        <FeedbackList feedback={feedback} handleDelete={deleteFeedback} />
+    </>
+  )
+}
+```
